@@ -33,8 +33,8 @@ interface LibrosDao {
     @Query("SELECT * FROM libros")
     fun getLibros(): Single<List<LibroEntity>>
 
-    @Query("SELECT nombre_libro FROM libros")
-    fun getNombreLibros(): List<LibroEntity>
+    /*@Query("SELECT nombre_libro FROM libros")
+    fun getNombreLibros(): List<LibroEntity>*/
 
     @Query("SELECT * FROM libros where nombre_autor = :nombreAutor")
     fun getLibros(nombreAutor: String): List<LibroEntity>
