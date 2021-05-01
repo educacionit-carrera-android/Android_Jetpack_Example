@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidjetpackexample.R
 import com.example.androidjetpackexample.data.Libro
-import com.example.androidjetpackexample.providers.LibrosProvider
+import com.example.androidjetpackexample.db.LibrosDatabase
 import com.example.androidjetpackexample.repositories.LibrosRepositoryImpl
 import com.example.androidjetpackexample.ui.adapters.LibrosAdapter
 import com.example.androidjetpackexample.viewmodels.LibrosViewModel
@@ -21,7 +21,11 @@ class LibrosFragment : Fragment() {
 
     private val viewModel: LibrosViewModel by viewModels {
         LibrosViewModelFactory(
-            LibrosRepositoryImpl(LibrosProvider())
+            LibrosRepositoryImpl(
+                LibrosDatabase
+                    .getInstance(requireContext())
+                    .librosDao()
+            )
         )
     }
 
