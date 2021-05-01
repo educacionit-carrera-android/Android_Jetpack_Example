@@ -28,6 +28,7 @@
             android:id="@+id/txtLibro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="@{libro.nombre}"
             tools:text="Harry Potter - El caliz de fuego" />
 
@@ -45,6 +46,7 @@
             android:id="@+id/txtAutor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="@{libro.autor}"
             tools:text="J.K. Rowling" />
 
