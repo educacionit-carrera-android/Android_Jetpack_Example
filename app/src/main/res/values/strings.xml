@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Android Jetpack Example</string>
+    <string name="book">Libro</string>
+    <string name="author">Autor</string>
 </resources>

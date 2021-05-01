@@ -1,5 +1,6 @@
 package com.example.androidjetpackexample.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import com.example.androidjetpackexample.viewmodels.factories.LibrosViewModelFac
 
 class LibrosFragment : Fragment() {
 
+    private var libroClickListener: LibroClickListener? = null
     private val viewModel: LibrosViewModel by viewModels {
         LibrosViewModelFactory(
             LibrosRepositoryImpl(
@@ -30,8 +32,13 @@ class LibrosFragment : Fragment() {
     }
 
     private lateinit var recyclerViewLibros: RecyclerView
-    private val adapter = LibrosAdapter()
+    private val adapter = LibrosAdapter { libroClickListener?.onLibroClicked(it) }
     private val TAG: String = LibrosFragment::class.java.simpleName
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        libroClickListener = context as LibroClickListener?
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,5 +106,9 @@ class LibrosFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         Log.i(TAG, "onDestroy")
+    }
+
+    interface LibroClickListener {
+        fun onLibroClicked(libro: Libro)
     }
 }

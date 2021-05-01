@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidjetpackexample.R
 import com.example.androidjetpackexample.data.Libro
 
-class LibrosAdapter : RecyclerView.Adapter<LibrosAdapter.LibrosViewHolder>() {
+class LibrosAdapter(
+    private val onLibroClicked: (libro: Libro) -> Unit
+) : RecyclerView.Adapter<LibrosAdapter.LibrosViewHolder>() {
 
     private var libros = ArrayList<Libro>()
 
@@ -27,6 +29,7 @@ class LibrosAdapter : RecyclerView.Adapter<LibrosAdapter.LibrosViewHolder>() {
         holder.apply {
             textViewNombre.text = libro.nombre
             textViewAutor.text = libro.autor
+            itemView.setOnClickListener { onLibroClicked(libro) }
         }
     }
 
