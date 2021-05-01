@@ -4,15 +4,18 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidjetpackexample.R
 import com.example.androidjetpackexample.data.Libro
+import com.example.androidjetpackexample.databinding.ActivityMainBinding
 import com.example.androidjetpackexample.ui.fragments.LibroFragment
 import com.example.androidjetpackexample.ui.fragments.LibrosFragment
 
 class MainActivity : AppCompatActivity(), LibrosFragment.LibroClickListener {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         if (savedInstanceState == null) {
             navigateToLibros()
@@ -29,7 +32,11 @@ class MainActivity : AppCompatActivity(), LibrosFragment.LibroClickListener {
     private fun navigateToLibro(libro: Libro) {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container, LibroFragment.newInstance(libro), LibrosFragment::class.simpleName)
+            .replace(
+                R.id.container,
+                LibroFragment.newInstance(libro),
+                LibrosFragment::class.simpleName
+            )
             .addToBackStack(null)
             .commit()
     }

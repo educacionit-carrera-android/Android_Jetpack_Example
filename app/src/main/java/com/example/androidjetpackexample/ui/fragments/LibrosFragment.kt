@@ -9,9 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
-import com.example.androidjetpackexample.R
 import com.example.androidjetpackexample.data.Libro
+import com.example.androidjetpackexample.databinding.FragmentLibrosBinding
 import com.example.androidjetpackexample.db.LibrosDatabase
 import com.example.androidjetpackexample.repositories.LibrosRepositoryImpl
 import com.example.androidjetpackexample.ui.adapters.LibrosAdapter
@@ -31,9 +30,10 @@ class LibrosFragment : Fragment() {
         )
     }
 
-    private lateinit var recyclerViewLibros: RecyclerView
     private val adapter = LibrosAdapter { libroClickListener?.onLibroClicked(it) }
     private val TAG: String = LibrosFragment::class.java.simpleName
+    private var _binding: FragmentLibrosBinding? = null
+    private val binding get() = _binding!! // Propiedad válida entre onCreateView y onDestroyView.
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,20 +44,20 @@ class LibrosFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Log.i(TAG, "onCreateView")
-        val view = inflater.inflate(R.layout.fragment_libros, container, false)
-        configurarUI(view)
+        _binding = FragmentLibrosBinding.inflate(inflater, container, false)
+
+        configurarAdapter()
         /* viewModel = ViewModelProvider(   // Solución a utilizar si se está en un archivo Java.
             this,
             LibrosViewModelFactory(
                 LibrosRepositoryImpl(LibrosProvider())
             )
         ).get(LibrosViewModel::class.java) */
-
         bindViewModel()
 
-        return view
+        return binding.root
     }
 
     private fun bindViewModel() {
@@ -73,9 +73,13 @@ class LibrosFragment : Fragment() {
         Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
     }
 
-    private fun configurarUI(view: View) {
-        recyclerViewLibros = view.findViewById(R.id.recyclerViewLibros)
-        recyclerViewLibros.adapter = adapter
+    private fun configurarAdapter() {
+        binding.recyclerViewLibros.adapter = adapter
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
