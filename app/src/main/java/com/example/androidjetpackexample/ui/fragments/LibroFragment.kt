@@ -33,11 +33,6 @@ class LibroFragment : Fragment() {
     }
 
     companion object {
-        private const val LIBRO: String = "Libro"
-
-        fun newInstance(libro: Libro) = LibroFragment()
-            .apply {
-                arguments = bundleOf(LIBRO to libro as Parcelable)
-            }
+        const val LIBRO: String = "Libro"
     }
 }

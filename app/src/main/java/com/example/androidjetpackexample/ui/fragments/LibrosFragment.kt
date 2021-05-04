@@ -1,25 +1,27 @@
 package com.example.androidjetpackexample.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.androidjetpackexample.R
 import com.example.androidjetpackexample.data.Libro
 import com.example.androidjetpackexample.databinding.FragmentLibrosBinding
 import com.example.androidjetpackexample.db.LibrosDatabase
 import com.example.androidjetpackexample.repositories.LibrosRepositoryImpl
 import com.example.androidjetpackexample.ui.adapters.LibrosAdapter
+import com.example.androidjetpackexample.ui.fragments.LibroFragment.Companion.LIBRO
 import com.example.androidjetpackexample.viewmodels.LibrosViewModel
 import com.example.androidjetpackexample.viewmodels.factories.LibrosViewModelFactory
 
 class LibrosFragment : Fragment() {
 
-    private var libroClickListener: LibroClickListener? = null
     private val viewModel: LibrosViewModel by viewModels {
         LibrosViewModelFactory(
             LibrosRepositoryImpl(
@@ -30,15 +32,15 @@ class LibrosFragment : Fragment() {
         )
     }
 
-    private val adapter = LibrosAdapter { libroClickListener?.onLibroClicked(it) }
+    private val adapter = LibrosAdapter { libro ->
+        findNavController().navigate(
+            R.id.goToLibro,
+            bundleOf(LIBRO to libro)
+        )
+    }
     private val TAG: String = LibrosFragment::class.java.simpleName
     private var _binding: FragmentLibrosBinding? = null
     private val binding get() = _binding!! // Propiedad válida entre onCreateView y onDestroyView.
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        libroClickListener = context as LibroClickListener?
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -110,9 +112,5 @@ class LibrosFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         Log.i(TAG, "onDestroy")
-    }
-
-    interface LibroClickListener {
-        fun onLibroClicked(libro: Libro)
     }
 }
